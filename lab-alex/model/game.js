@@ -30,3 +30,27 @@ Game.fetchGame = function(id) {
   debug('fetchGame');
   return storage.fetchItem('game', id);
 };
+
+Game.updateGame = function(id, _game) {
+  debug('updateGame');
+
+  return storage.fetchItem('game', id)
+    .then( game => {
+      for( var prop in game) {
+        if(prop === 'id') continue;
+        if(_game[prop]) game[prop] = _game[prop];
+      }
+      return storage.createItem('game', game);
+    })
+    .catch( err => Promise.reject(createError(404, err.message)));
+};
+
+Game.deleteGame = function(id) {
+  debug('deleteGame');
+  return storage.deleteItem('game', id);
+};
+
+Game.fetchIDs = function() {
+  debug('fetchIDs');
+  return storage.fetchIDs('game');
+};
